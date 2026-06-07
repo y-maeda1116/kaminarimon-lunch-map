@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>雷門1-1-1から500m圏内 平日ランチマップ</title>
+    <title>雷門周辺 平日ランチマップ（半径700m）</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
@@ -15,7 +15,7 @@
     <header class="bg-white shadow-sm z-10 px-4 py-3 flex justify-between items-center">
         <h1 class="text-xl font-bold text-gray-800 flex items-center gap-2">
             📍 雷門周辺 平日ランチマップ
-            <span class="text-xs bg-red-100 text-red-600 font-normal px-2 py-0.5 rounded-full">半径500m</span>
+            <span class="text-xs bg-red-100 text-red-600 font-normal px-2 py-0.5 rounded-full">半径700m</span>
         </h1>
         <div id="time-status" class="text-sm font-medium text-gray-500"></div>
     </header>
@@ -27,8 +27,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // --- 1. 初期設定 (雷門1-1-1) ---
-        const centerLat = 35.7110; 
-        const centerLng = 139.7926; // 雷門交差点・交番付近の正確な座標
+        const centerLat = 35.7116;
+        const centerLng = 139.7965; // 雷門（風雷神門）付近の座標
         
         // 地図の初期化
         const map = L.map('map').setView([centerLat, centerLng], 16);
@@ -52,7 +52,7 @@
             color: '#ef4444',
             fillColor: '#ef4444',
             fillOpacity: 0.08,
-            radius: 500,
+            radius: 700,
             weight: 1.5,
             dashArray: '5, 5'
         }).addTo(map);
@@ -237,6 +237,61 @@
                 end: "17:00",
                 budget: "¥500 - ¥1,000",
                 note: "パン百名店選出。焼きたてパンでサクッとランチ。テイクアウトも可"
+            },
+            // --- 鰻 ---
+            {
+                name: "前川 本店",
+                genre: "鰻・川魚",
+                lat: 35.7119,
+                lng: 139.7968,
+                start: "11:30",
+                end: "14:30",
+                budget: "¥3,000 - ¥5,000",
+                note: "浅草を代表する老舗鰻店。ランチの鰻重が特別な日に人気"
+            },
+            // --- 洋食・バー ---
+            {
+                name: "神谷バー",
+                genre: "洋食・バー",
+                lat: 35.7115,
+                lng: 139.7960,
+                start: "11:30",
+                end: "21:00",
+                budget: "¥1,000 - ¥2,000",
+                note: "1880年創業の老舗バー。名物デンキブランと洋食ランチが楽しめる"
+            },
+            // --- 追加ラーメン ---
+            {
+                name: "熟成味噌らーめん のりあき・美々",
+                genre: "ラーメン・味噌",
+                lat: 35.7088,
+                lng: 139.8006,
+                start: "11:00",
+                end: "21:00",
+                budget: "¥1,000 - ¥1,500",
+                note: "熟成味噌が決め手の濃厚味噌ラーメン。冬は特に人気"
+            },
+            // --- 追加蕎麦 ---
+            {
+                name: "丹想庵 健次郎",
+                genre: "蕎麦・日本料理",
+                lat: 35.7132,
+                lng: 139.8020,
+                start: "11:30",
+                end: "14:30",
+                budget: "¥1,000 - ¥2,000",
+                note: "香り高い手打ち蕎麦と季節の天ぷら。落ち着いた雰囲気"
+            },
+            // --- 喫茶 ---
+            {
+                name: "ローヤル珈琲店 本店",
+                genre: "喫茶・サンドイッチ",
+                lat: 35.7105,
+                lng: 139.8035,
+                start: "10:00",
+                end: "19:00",
+                budget: "¥800 - ¥1,200",
+                note: "喫茶店百名店選出。昭和レトロな空間で名物ホットサンドランチ"
             }
         ];
 
