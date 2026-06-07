@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雷門1-1-1から500m圏内 平日ランチマップ</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map { height: calc(100vh - 64px); }
+    </style>
+</head>
+<body class="bg-gray-50 flex flex-col h-screen overflow-hidden">
+
+    <header class="bg-white shadow-sm z-10 px-4 py-3 flex justify-between items-center">
+        <h1 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+            📍 雷門周辺 平日ランチマップ
+            <span class="text-xs bg-red-100 text-red-600 font-normal px-2 py-0.5 rounded-full">半径500m</span>
+        </h1>
+        <div id="time-status" class="text-sm font-medium text-gray-500"></div>
+    </header>
+
+    <div class="flex flex-1 relative overflow-hidden">
+        <div id="map" class="w-full h-full"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // --- 1. 初期設定 (雷門1-1-1) ---
+        const centerLat = 35.7110; 
+        const centerLng = 139.7926; // 雷門交差点・交番付近の正確な座標
+        
+        // 地図の初期化
+        const map = L.map('map').setView([centerLat, centerLng], 16);
+
+        // 背景地図（OpenStreetMap）の読み込み
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // 中心点（雷門）に目立つピンを配置
+        const centerMarker = L.marker([centerLat, centerLng], {
+            icon: L.divIcon({
+                className: 'bg-red-500 w-4 h-4 rounded-full border-2 border-white shadow-lg flex items-center justify-center',
+                html: '<div class="w-1.5 h-1.5 bg-white rounded-full"></div>',
+                iconSize: [16, 16]
+            })
+        }).addTo(map).bindPopup('<b>中心地: 雷門1-1-1</b>');
+
+        // 500mサークルの描画
+        L.circle([centerLat, centerLng], {
+            color: '#ef4444',
+            fillColor: '#ef4444',
+            fillOpacity: 0.08,
+            radius: 500,
+            weight: 1.5,
+            dashArray: '5, 5'
+        }).addTo(map);
+
+        // --- 2. サンプル飲食店データ（Claude Codeにここを拡張してもらう） ---
+        const lunchSpots = [
+            {
+                name: "浅草むぎとろ 本店",
+                genre: "和食・とろろ",
+                lat: 35.7095,
+                lng: 139.7940,
+                start: "11:00",
+                end: "16:00",
+                budget: "¥1,500 - ¥3,000",
+                note: "平日限定のとろろバイキングが人気"
+            },
+            {
+                name: "駒形どぜう 本店",
+                genre: "郷土料理・どじょう",
+                lat: 35.7081,
+                lng: 139.7942,
+                start: "11:00",
+                end: "21:00",
+                budget: "¥3,000 - ¥4,000",
+                note: "江戸時代から続く老舗。平日昼も営業"
+            }
+        ];
+
+        // --- 3. 営業時間判定ロジック ---
+        function isLunchTime(startStr, endStr) {
+            const now = new Date();
+            const day = now.getDay();
+            // 平日（月〜金）かチェック (1=月, 5=金)
+            if (day === 0 || day === 6) return false;
+
+            const [sHour, sMin] = startStr.split(':').map(Number);
+            const [eHour, eMin] = endStr.split(':').map(Number);
+            
+            const startTime = new Date().setHours(sHour, sMin, 0);
+            const endTime = new Date().setHours(eHour, eMin, 0);
+            const currentTime = now.getTime();
+
+            return currentTime >= startTime && currentTime <= endTime;
+        }
+
+        // 曜日と現在時刻の表示アップデート
+        const days = ['日', '月', '火', '水', '木', '金', '土'];
+        const now = new Date();
+        document.getElementById('time-status').innerText = `現在: ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')} (${days[now.getDay()]})`;
+
+        // --- 4. マップへのピン配置 ---
+        lunchSpots.forEach(spot => {
+            const isOpen = isLunchTime(spot.start, spot.end);
+            
+            // 営業中なら「青」、準備中・時間外なら「グレー」のピン
+            const markerColor = isOpen ? 'bg-blue-600' : 'bg-gray-400';
+            const statusBadge = isOpen 
+                ? '<span class="text-xs bg-green-100 text-green-800 px-1.5 py-0.5 rounded font-bold">営業中</span>' 
+                : '<span class="text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded font-bold">時間外/定休</span>';
+
+            const customIcon = L.divIcon({
+                className: `${markerColor} w-6 h-6 rounded-full border-2 border-white shadow flex items-center justify-center text-white font-bold text-xs`,
+                html: spot.genre[0], // ジャンルの頭文字をアイコン内に表示
+                iconSize: [24, 24]
+            });
+
+            const popupContent = `
+                <div class="p-1 font-sans">
+                    <div class="flex items-center gap-2 mb-1">
+                        <h3 class="font-bold text-base text-gray-900 m-0">${spot.name}</h3>
+                        ${statusBadge}
+                    </div>
+                    <p class="text-xs text-gray-500 m-0 mb-1">ジャンル: ${spot.genre}</p>
+                    <p class="text-xs text-gray-700 m-0"><b>ランチ時間:</b> ${spot.start} 〜 ${spot.end}</p>
+                    <p class="text-xs text-gray-700 m-0"><b>予算:</b> ${spot.budget}</p>
+                    ${spot.note ? `<p class="text-xs text-gray-600 bg-gray-50 p-1 rounded mt-1 border-l-2 border-gray-300">${spot.note}</p>` : ''}
+                </div>
+            `;
+
+            L.marker([spot.lat, spot.lng], { icon: customIcon })
+                .addTo(map)
+                .bindPopup(popupContent);
+        });
+    </script>
+</body>
+</html>
