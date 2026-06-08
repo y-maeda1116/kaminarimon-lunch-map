@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>雷門周辺 平日ランチマップ（半径700m）</title>
+    <title>雷門周辺 平日ランチマップ（半径1km）</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
@@ -15,7 +15,7 @@
     <header class="bg-white shadow-sm z-10 px-4 py-3 flex justify-between items-center">
         <h1 class="text-xl font-bold text-gray-800 flex items-center gap-2">
             📍 雷門周辺 平日ランチマップ
-            <span class="text-xs bg-red-100 text-red-600 font-normal px-2 py-0.5 rounded-full">半径700m</span>
+            <span class="text-xs bg-red-100 text-red-600 font-normal px-2 py-0.5 rounded-full">半径1km</span>
         </h1>
         <div id="time-status" class="text-sm font-medium text-gray-500"></div>
     </header>
@@ -52,7 +52,7 @@
             color: '#ef4444',
             fillColor: '#ef4444',
             fillOpacity: 0.08,
-            radius: 700,
+            radius: 1000,
             weight: 1.5,
             dashArray: '5, 5'
         }).addTo(map);
@@ -571,6 +571,210 @@
                 end: "21:00",
                 budget: "¥1,000 - ¥2,000",
                 note: "新鮮な鶏料理が味わえる。月曜定休"
+            },
+            // --- 寿・駒形エリア（半径拡大で追加）---
+            // --- 追加ラーメン ---
+            {
+                name: "佐賀ラーメン 美登里",
+                genre: "ラーメン",
+                lat: 35.71845,
+                lng: 139.79410,
+                start: "11:00",
+                end: "15:00",
+                budget: "¥800 - ¥1,200",
+                note: "佐賀ラーメンの薄味スープが特徴（寿4丁目）"
+            },
+            {
+                name: "浅草らーめん 龍太郎",
+                genre: "ラーメン",
+                lat: 35.71710,
+                lng: 139.79295,
+                start: "11:00",
+                end: "15:00",
+                budget: "¥800 - ¥1,200",
+                note: "寿エリアのラーメン店。行列のできる味"
+            },
+            {
+                name: "三喜",
+                genre: "ラーメン",
+                lat: 35.71271,
+                lng: 139.80578,
+                start: "11:00",
+                end: "14:30",
+                budget: "¥800 - ¥1,200",
+                note: "西浅草の昔ながらのラーメン店"
+            },
+            // --- 追加蕎麦 ---
+            {
+                name: "本陣",
+                genre: "蕎麦",
+                lat: 35.71684,
+                lng: 139.79399,
+                start: "11:30",
+                end: "19:00",
+                budget: "¥1,000 - ¥1,500",
+                note: "寿エリアの落ち着いた蕎麦店"
+            },
+            {
+                name: "江戸清",
+                genre: "蕎麦",
+                lat: 35.71059,
+                lng: 139.78778,
+                start: "11:00",
+                end: "19:30",
+                budget: "¥800 - ¥1,300",
+                note: "西浅草の老舗蕎麦店"
+            },
+            // --- 追加中華 ---
+            {
+                name: "華春楼",
+                genre: "中華料理",
+                lat: 35.71697,
+                lng: 139.79342,
+                start: "11:30",
+                end: "14:30",
+                budget: "¥800 - ¥1,500",
+                note: "寿エリアの本格中華料理店"
+            },
+            {
+                name: "豊龍",
+                genre: "中華料理",
+                lat: 35.71867,
+                lng: 139.79245,
+                start: "11:00",
+                end: "15:00",
+                budget: "¥700 - ¥1,200",
+                note: "寿4丁目の町中華。ランチセットがお得"
+            },
+            // --- 追加洋食 ---
+            {
+                name: "グリル佐久良",
+                genre: "洋食",
+                lat: 35.71732,
+                lng: 139.79709,
+                start: "11:30",
+                end: "14:00",
+                budget: "¥1,200 - ¥2,000",
+                note: "昭和の味わい残る洋食店（寿3丁目）。火・水定休"
+            },
+            // --- 追加天麩羅 ---
+            {
+                name: "いせや",
+                genre: "天麩羅・揚げ物",
+                lat: 35.70622,
+                lng: 139.78842,
+                start: "11:00",
+                end: "19:00",
+                budget: "¥1,000 - ¥1,800",
+                note: "駒形エリアの天麩羅店。揚げたてが絶品"
+            },
+            // --- 追加とんかつ ---
+            {
+                name: "はやしや",
+                genre: "とんかつ",
+                lat: 35.70624,
+                lng: 139.78790,
+                start: "11:00",
+                end: "14:00",
+                budget: "¥1,000 - ¥1,800",
+                note: "駒形エリアのとんかつ店。サクサクの衣"
+            },
+            // --- 追加寿司 ---
+            {
+                name: "㐂久鮨",
+                genre: "寿司",
+                lat: 35.71452,
+                lng: 139.78923,
+                start: "11:30",
+                end: "14:00",
+                budget: "¥1,000 - ¥2,000",
+                note: "寿エリアの寿司店。ネタが新鮮"
+            },
+            {
+                name: "太助鮨",
+                genre: "寿司",
+                lat: 35.71452,
+                lng: 139.78823,
+                start: "11:30",
+                end: "14:00",
+                budget: "¥1,000 - ¥2,000",
+                note: "寿3丁目の寿司店。ランチにぎりが人気"
+            },
+            // --- 追加鰻 ---
+            {
+                name: "鰻禪",
+                genre: "鰻",
+                lat: 35.70881,
+                lng: 139.80565,
+                start: "11:30",
+                end: "14:00",
+                budget: "¥2,500 - ¥4,000",
+                note: "駒形エリアの鰻店。備長炭で焼き上げる"
+            },
+            // --- 追加定食 ---
+            {
+                name: "結わえる",
+                genre: "和食・定食",
+                lat: 35.70374,
+                lng: 139.79326,
+                start: "11:30",
+                end: "14:00",
+                budget: "¥900 - ¥1,300",
+                note: "駒形エリアのヘルシー定食店（月〜土昼のみ）"
+            },
+            {
+                name: "富久井",
+                genre: "和食",
+                lat: 35.70874,
+                lng: 139.80392,
+                start: "11:00",
+                end: "14:00",
+                budget: "¥800 - ¥1,500",
+                note: "駒形エリアの和食店。日替わり定食が人気"
+            },
+            // --- 追加割烹 ---
+            {
+                name: "割烹 船生",
+                genre: "割烹・日本料理",
+                lat: 35.70647,
+                lng: 139.80417,
+                start: "11:30",
+                end: "14:00",
+                budget: "¥1,500 - ¥3,000",
+                note: "駒形エリアの割烹店。季節の食材を活かした料理"
+            },
+            // --- 追加からあげ ---
+            {
+                name: "鬼のからあげ",
+                genre: "からあげ",
+                lat: 35.70625,
+                lng: 139.79103,
+                start: "11:00",
+                end: "20:00",
+                budget: "¥500 - ¥1,000",
+                note: "駒形エリアのからあげ専門店。サクジュワ"
+            },
+            // --- 追加おにぎり ---
+            {
+                name: "おにぎり 浅草宿六",
+                genre: "おにぎり",
+                lat: 35.71690,
+                lng: 139.79475,
+                start: "11:30",
+                end: "17:00",
+                budget: "¥500 - ¥1,000",
+                note: "寿エリアの手作りおにぎり店。サクッとランチに"
+            },
+            // --- 追加和食 ---
+            {
+                name: "たまや",
+                genre: "和食",
+                lat: 35.71805,
+                lng: 139.79524,
+                start: "11:00",
+                end: "14:00",
+                budget: "¥800 - ¥1,500",
+                note: "寿4丁目の和食店。手頃な日替わり定食"
             }
         ];
 
