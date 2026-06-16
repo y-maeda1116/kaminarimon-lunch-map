@@ -1975,8 +1975,8 @@ const lunchSpots = [
     {
             name: "SALAY Kebab",
             genre: "ケバブ",
-            lat: 35.71266,
-            lng: 139.792,
+            lat: 35.71056,
+            lng: 139.79734,
             start: "11:00",
             end: "14:00",
             budget: "¥800 - ¥1,500",
@@ -2335,8 +2335,8 @@ const lunchSpots = [
     {
             name: "甲州屋",
             genre: "蕎麦",
-            lat: 35.70707,
-            lng: 139.79344,
+            lat: 35.71539,
+            lng: 139.79370,
             start: "11:00",
             end: "14:00",
             budget: "¥800 - ¥1,300",
