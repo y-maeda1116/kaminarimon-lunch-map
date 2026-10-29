@@ -159,3 +159,61 @@ describe('index.html と lunchSpots.js の連携', () => {
         assert.ok(js.includes('globalThis.lunchSpots'), 'グローバル公開がない');
     });
 });
+
+describe('Tailwind CDN 除去の整合性', () => {
+    const fs = require('node:fs');
+    const html = fs.readFileSync(require('node:path').resolve(__dirname, './index.html'), 'utf8');
+    const css = fs.readFileSync(require('node:path').resolve(__dirname, './styles.css'), 'utf8');
+
+    it('index.html に Tailwind CDN への参照が残っていない', () => {
+        assert.ok(!html.includes('cdn.jsdelivr.net/npm/@tailwindcss'), 'Tailwind CDN が残っている');
+        assert.ok(!html.includes('cdn.tailwindcss.com'), 'Tailwind CDN が残っている');
+        assert.ok(html.includes('href="styles.css"'), 'styles.css が読み込まれていない');
+    });
+
+    it('index.html / JS で使う全クラスが styles.css で定義されている', () => {
+        // class="..." / className: '...' / className: `...` / 三項演算子の文字列リテラルから収集
+        const patterns = [
+            /class="([^"]+)"/g,
+            /className:\s*'([^']+)'/g,
+            /className:\s*`([^`]+)`/g,
+            /'((?:bg|text)-[\w-]+(?:\s+[\w-]+)*)'/g,
+        ];
+        const used = new Set();
+        for (const re of patterns) {
+            for (const m of html.matchAll(re)) {
+                m[1].split(/\s+/).forEach(t => {
+                    if (/^[a-z][a-z0-9]*(-[a-z0-9.]+)*$/.test(t)) used.add(t);
+                });
+            }
+        }
+        assert.ok(used.size > 30, `クラスの収集に失敗した(used=${used.size})`);
+
+        const missing = [...used].filter(t => !css.includes(`.${t.replace(/\./g, '\\.')}`));
+        assert.deepEqual(missing, [], `styles.css に定義がないクラス: ${missing.join(', ')}`);
+    });
+
+    it('styles.css に未使用のクラス定義がない', () => {
+        const defined = [...css.matchAll(/^\.([a-z][a-z0-9]*(-[a-z0-9.]+)*)\s*[,{]/gm)]
+            .map(m => m[1].replace(/\\\./g, '.'));
+        assert.ok(defined.length > 30, `クラス定義の抽出に失敗した(defined=${defined.length})`);
+
+        const patterns = [
+            /class="([^"]+)"/g,
+            /className:\s*'([^']+)'/g,
+            /className:\s*`([^`]+)`/g,
+            /'((?:bg|text)-[\w-]+(?:\s+[\w-]+)*)'/g,
+        ];
+        const used = new Set();
+        for (const re of patterns) {
+            for (const m of html.matchAll(re)) {
+                m[1].split(/\s+/).forEach(t => {
+                    if (/^[a-z][a-z0-9]*(-[a-z0-9.]+)*$/.test(t)) used.add(t);
+                });
+            }
+        }
+        // hover:/md: 等のバリアントや reset 以外で、未使用の定義があれば検出
+        const unused = defined.filter(t => !used.has(t));
+        assert.deepEqual(unused, [], `使用されていないクラス定義: ${unused.join(', ')}`);
+    });
+});
