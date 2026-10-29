@@ -4385,4 +4385,8 @@ const lunchSpots = [
         }
 ];
 
-module.exports = { lunchSpots };
+// ブラウザ(index.html)からはグローバルとして参照、Node(テスト)からは require で参照
+globalThis.lunchSpots = lunchSpots;
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { lunchSpots };
+}

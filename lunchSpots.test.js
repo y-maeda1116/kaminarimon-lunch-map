@@ -139,3 +139,23 @@ describe('isLunchTime ロジック', () => {
         assert.equal(isLunchTime('11:00', '14:00', mon), true);
     });
 });
+
+describe('index.html と lunchSpots.js の連携', () => {
+    const fs = require('node:fs');
+
+    it('index.html は lunchSpots.js を script タグで読み込む', () => {
+        const html = fs.readFileSync(require('node:path').resolve(__dirname, './index.html'), 'utf8');
+        assert.ok(html.includes('<script src="lunchSpots.js"></script>'), 'lunchSpots.js が読み込まれていない');
+    });
+
+    it('index.html に店舗データのインライン定義が残っていない', () => {
+        const html = fs.readFileSync(require('node:path').resolve(__dirname, './index.html'), 'utf8');
+        assert.ok(!html.includes('const lunchSpots = ['), 'インラインデータが残っている');
+        assert.ok(!html.includes('genre: "'), '店舗データの断片が残っている');
+    });
+
+    it('lunchSpots.js はブラウザ向けにグローバルへ公開している', () => {
+        const js = fs.readFileSync(require('node:path').resolve(__dirname, './lunchSpots.js'), 'utf8');
+        assert.ok(js.includes('globalThis.lunchSpots'), 'グローバル公開がない');
+    });
+});
