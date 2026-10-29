@@ -138,6 +138,23 @@ describe('isLunchTime ロジック', () => {
         const mon = new Date(2026, 5, 8, 14, 0);
         assert.equal(isLunchTime('11:00', '14:00', mon), true);
     });
+
+    // Issue #2: end が 24:00 の店舗は setHours(24,...) が翌日0時に繰り上がり
+    // 常に営業中と判定されていた
+    it('平日23時は営業時間内（10:00-24:00）→ true', () => {
+        const mon = new Date(2026, 5, 8, 23, 0);
+        assert.equal(isLunchTime('10:00', '24:00', mon), true);
+    });
+
+    it('平日0時30分は営業時間外（10:00-24:00）→ false', () => {
+        const mon = new Date(2026, 5, 8, 0, 30);
+        assert.equal(isLunchTime('10:00', '24:00', mon), false);
+    });
+
+    it('平日9時は営業時間外（10:00-24:00）→ false', () => {
+        const mon = new Date(2026, 5, 8, 9, 0);
+        assert.equal(isLunchTime('10:00', '24:00', mon), false);
+    });
 });
 
 describe('index.html と lunchSpots.js の連携', () => {
