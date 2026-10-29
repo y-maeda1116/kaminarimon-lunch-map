@@ -69,9 +69,10 @@
 
             const [sHour, sMin] = startStr.split(':').map(Number);
             const [eHour, eMin] = endStr.split(':').map(Number);
-            
-            const startTime = new Date().setHours(sHour, sMin, 0);
-            const endTime = new Date().setHours(eHour, eMin, 0);
+
+            // now を基準にミリ秒をゼロ化して境界を作る(別インスタンスの new Date() は不可)
+            const startTime = new Date(now).setHours(sHour, sMin, 0, 0);
+            const endTime = new Date(now).setHours(eHour, eMin, 0, 0);
             const currentTime = now.getTime();
 
             return currentTime >= startTime && currentTime <= endTime;

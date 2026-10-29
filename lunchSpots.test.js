@@ -99,8 +99,8 @@ describe('isLunchTime ロジック', () => {
         if (day === 0 || day === 6) return false;
         const [sHour, sMin] = startStr.split(':').map(Number);
         const [eHour, eMin] = endStr.split(':').map(Number);
-        const start = new Date(mockDate).setHours(sHour, sMin, 0);
-        const end = new Date(mockDate).setHours(eHour, eMin, 0);
+        const start = new Date(mockDate).setHours(sHour, sMin, 0, 0);
+        const end = new Date(mockDate).setHours(eHour, eMin, 0, 0);
         return mockDate.getTime() >= start && mockDate.getTime() <= end;
     }
 
